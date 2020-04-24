@@ -12,3 +12,7 @@ cd rcschaff82-cwp_shoutcast2-*
 ./install.sh
 
 You should now have a new menu on the right side of the CWP Admin area called ShoutCast2
+
+TODO List:
+Automatic Configuration of CSF Firewall
+
