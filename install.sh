@@ -1,9 +1,9 @@
 #!/bin/bash
+cp shoutcast2.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
 useradd -m shoutcast2
 cd /home/shoutcast2
 wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz
 tar -xzf sc_serv2_linux_x64-latest.tar.gz
-cp shoutcast2.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
 cat <<'EOF' >> /usr/local/cwpsrv/htdocs/resources/admin/include/3rdparty.php
 <noscript>
 </ul>
