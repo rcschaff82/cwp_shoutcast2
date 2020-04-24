@@ -16,7 +16,7 @@ cat <<'EOF' >> /usr/local/cwpsrv/htdocs/resources/admin/include/3rdparty.php
         $(document).ready(function() {
                 var newButtons = ''
                 +' <li>'
-                +' <a href="?module=shoutcast2" class=""><span aria-hidden="true" class="icon16 icomoon-icon-volume-hight"></span>ShoutCast 2</a>'
+                +' <a href="?module=shoutcast2" class=""><span aria-hidden="true" class="icon16 icomoon-icon-volume-high"></span>ShoutCast 2</a>'
                 +'</li>';
                 $("li#mn-3").before(newButtons);
         });
