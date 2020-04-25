@@ -73,11 +73,14 @@ $filer =  @$_POST['srv_id'];
 echo "Deleting";
 $ini_array = parse_ini_file("/home/shoutcast2/$filer");
  $port = $ini_array['portbase'];
+$port2 = intval($port) + 1;
 $cmd = "kill `cat /home/shoutcast2/sc_serv_$port.pid`";
 shell_exec($cmd);
 sleep(4);
 unlink("/home/shoutcast2/$filer");
 unlink("/home/shoutcast2/$filer.sh");
+copy("/etc/csf/csf.conf","/etc/csf/csf.conf.bu");
+shell_exec("sed -i 's/,".$port.",".$port2."//g' /etc/csf/csf.conf");
 break;
 }
                 echo <<<EOS
@@ -131,7 +134,8 @@ EOT;
 
                  if(@$_POST['doadd'] == 'start') {
                         $port = intval($_POST['port']);
-                        $pass = $_POST['pass'];
+                        $port2 = $port + 1;
+			$pass = $_POST['pass'];
                         $admin = $_POST['admin'];
                         if (strlen($admin) < 6 || strlen($pass) < 6) {
                                 $this->alert = "alert-error";
@@ -181,7 +185,13 @@ EOF;
                 chgrp("/home/shoutcast2/$port.conf","shoutcast2");
                 chgrp("/home/shoutcast2/$port.conf.sh","shoutcast2");
                 chmod("/home/shoutcast2/$port.conf.sh",0755);
-                }
+                copy("/etc/csf/csf.conf","/etc/csf/csf.conf.bu");
+		shell_exec('sed -i -re "s@TCP_IN(.*)(\")@TCP_IN\1,'.$port.','.$port2.'\2@" /etc/csf/csf.conf');
+		shell_exec('sed -i -re "s@TCP_OUT(.*)(\")@TCP_OUT\1,'.$port.','.$port2.'\2@" /etc/csf/csf.conf');
+		shell_exec('sed -i -re "s@TCP6_IN(.*)(\")@TCP6_IN\1,'.$port.','.$port2.'\2@" /etc/csf/csf.conf');
+		shell_exec('sed -i -re "s@TCP6_OUT(.*)(\")@TCP6_OUT\1,'.$port.','.$port2.'\2@" /etc/csf/csf.conf');
+		
+		}
         }
         private function message_install()
         {
