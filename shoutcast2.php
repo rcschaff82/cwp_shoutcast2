@@ -8,6 +8,7 @@ if ( !isset( $include_path ) )
 
 class shoutcast2 {
         private $dir = "/home/shoutcast2";
+	private $natip;
         private $status_s2 = "";
         private $version_s2 = "";
         private $github_branches= "https://api.github.com/repos/rcschaff82/cwp_2fa/branches";
@@ -16,6 +17,7 @@ class shoutcast2 {
         private $github_url2 = "https://api.github.com/repos/phalcon/cphalcon/commits?per_page=1&sha=";
         public function __construct()
         {
+		$this->natip = trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com"));
                 echo '<center><b>Check if ShoutCast2 installed</b></center><br>';
         }
         public function initalize()
@@ -101,12 +103,13 @@ foreach(glob($this->dir.'/*.conf') as $file) {
  $base = basename($file);
  $ini_array = parse_ini_file($file);
  $port = $ini_array['portbase'];
+ $ip = (array_key_exists("srcip",$ini_array))?$ini_array['srcip']:$this->natip;
  $online = (file_exists($this->dir.'/sc_serv_'.$port.'.pid'))? "checkmark":"close";
 echo <<<EOS
                                 <tr><td><span title="Status" class="icon12 minia-icon-$online"></span></td><td><a href="index.php?module=file_editor&amp;file=$full">$base</a></td>
                                 <td><form action="" method="post" onsubmit="return confirm('Are you sure you want to start server: $base ?');"><input type="hidden" name="srv_id" value="$base" size="0"><input type="hidden" name="action" size="0" value="srv_start"><div class="form-group"><button type="submit" class="btn btn-success btn-xs">Start</button></div></form></td>
                                 <td><form action="" method="post" onsubmit="return confirm('Are you sure you want to stop server: $base ?');"><input type="hidden" name="srv_id" value="$base" size="0"><input type="hidden" name="action" size="0" value="srv_stop"><div class="form-group"><button type="submit" class="btn btn-warning btn-xs">Stop</button></div></form></td>
-                                <td><div class="form-group"><button type="submit" onclick="location.href='{$_SERVER['SERVER_NAME']}//:$port'" class="btn btn-default btn-xs">Admin Panel</button></div></td>
+                                <td><div class="form-group"><button type="submit" onclick="location.href='//{$ip}:$port'" class="btn btn-default btn-xs">Admin Panel</button></div></td>
                                 <td><form action="" method="post" onsubmit="return confirm('Are you sure you want to delete server: $base ?');"><input type="hidden" name="srv_id" value="$base" size="0"><input type="hidden" name="action" size="0" value="srv_delete"><div class="form-group"><button type="submit" class="btn btn-danger btn-xs">Delete</button></div></form></td></tr>
 EOS;
 }
@@ -122,16 +125,14 @@ EOS;
         private function add_server() {
 		$ips = networking_inet_ips();
 		$hostname = get_hostname();
-		$natip = trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com"));
-		//echo "<br>Private? ". var_dump(ipv4_manage_is_ip_private( trim($ips[0]) ))."<br>";
-		if ( !in_array($natip,$ips)) { array_push($ips,$natip);}
-		$selectip = "<label>Src/DstIP</label><select name='ip'>";
+		$selectip = "<label>Src/DstIP</label><select name='ip'><option value='ALL'>ALL</option>";
 		foreach($ips as $ip) {
-			if (ipv4_manage_is_ip_private( trim($ip))) continue;
-			$selectip .= "<option value='$ip'>$ip</option>";
+			if (ipv4_manage_is_ip_private( trim($ip))) $nat="*";
+			$selectip .= "<option value='$ip'>$ip$nat</option>";
 		}
 		$selectip .="</select><br>";
 echo <<<EOT
+<div>* Requires a NAT connection.  Detected external ip of $this->natip</div>
 <form method="post">
 <input type="hidden" name="doadd" value="start">
 <label>Port</label><input type="input" name="port" value="8000"><br>
@@ -149,6 +150,7 @@ EOT;
                         $port2 = $port + 1;
 			$pass = $_POST['pass'];
                         $admin = $_POST['admin'];
+			$ip = $_POST['ip'];
                         if (strlen($admin) < 6 || strlen($pass) < 6) {
                                 $this->alert = "alert-error";
                                 $this->message = "<strong>Error!</strong><br>Passwords must be at least 6 characters!";
@@ -186,6 +188,9 @@ adminpassword={$admin}
 publicserver=always
 
 EOF;
+if ($ip != "ALL") {
+   $input .= "srcip=$ip\ndstip=$ip";
+}
 $input2 = <<<EOF
 #!/bin/bash
 sudo -u shoutcast2 /home/shoutcast2/sc_serv daemon /home/shoutcast2/$port.conf > /dev/null 2>/dev/null &
