@@ -120,12 +120,24 @@ EOS;
         }
         ///  Should be done ///   ip -4 addr | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
         private function add_server() {
+		$ips = networking_inet_ips();
+		$hostname = get_hostname();
+		$natip = trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com"));
+		//echo "<br>Private? ". var_dump(ipv4_manage_is_ip_private( trim($ips[0]) ))."<br>";
+		if ( !in_array($natip,$ips)) { array_push($ips,$natip);}
+		$selectip = "<label>Src/DstIP</label><select name='ip'>";
+		foreach($ips as $ip) {
+			if (ipv4_manage_is_ip_private( trim($ip))) continue;
+			$selectip .= "<option value='$ip'>$ip</option>";
+		}
+		$selectip .="</select><br>";
 echo <<<EOT
 <form method="post">
 <input type="hidden" name="doadd" value="start">
 <label>Port</label><input type="input" name="port" value="8000"><br>
 <label>DJ Password</label><input type="input" name="pass" value=""><br>
 <label>Admin Pass</label><input type="input" name="admin" value=""><br>
+{$selectip}
 <button type="submit" name="submit" value="submit">Add a Server</button>
 
 </form>
