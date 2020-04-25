@@ -18,9 +18,7 @@ You should now have a new menu on the right side of the CWP Admin area called Sh
 Change Log
 
 -Added auto configuration of csf firewall
-
+-Added Bind option for IP's
 TODO List:
-
-Add option for Multiple IPs (Current listens on all IP's
 
 
