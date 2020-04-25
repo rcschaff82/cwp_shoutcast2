@@ -15,9 +15,12 @@ cd rcschaff82-cwp_shoutcast2-*
 
 You should now have a new menu on the right side of the CWP Admin area called ShoutCast2
 
+Change Log
+
+-Added auto configuration of csf firewall
+
 TODO List:
 
-Automatic Configuration of CSF Firewall
-
 Add option for Multiple IPs (Current listens on all IP's
+
 
