@@ -20,5 +20,5 @@ Change Log
 -Added auto configuration of csf firewall
 -Added Bind option for IP's
 TODO List:
-
+Possibly assigning Shoutcasts to User Accounts and building a user panel mod.  PLease open a ticket and let me know what you think.
 
