@@ -124,6 +124,11 @@ EOS;
         ///  Should be done ///   ip -4 addr | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
         private function add_server() {
 		$ips = networking_inet_ips();
+		global $mysql_conn;
+	//	$resp=mysqli_query($mysql_conn,"Select `username` FROM `user`");
+	//	while($row=mysqli_fetch_assoc($resp)) {
+		//var_dump($row);
+	//	}
 		$hostname = get_hostname();
 		$selectip = "<label>Src/DstIP</label><select name='ip'><option value='ALL'>ALL</option>";
 		foreach($ips as $ip) {
@@ -151,6 +156,12 @@ EOT;
 			$pass = $_POST['pass'];
                         $admin = $_POST['admin'];
 			$ip = $_POST['ip'];
+    			if (($se = shell_exec("netstat -paln | grep LISTEN | grep -oP :$port")) != "") {
+                                $this->alert = "alert-error";
+				$this->message = "<strong>Error!</strong><br>$port already in use by another application!";
+				$this->toHtml();
+				return false;
+                        }
                         if (strlen($admin) < 6 || strlen($pass) < 6) {
                                 $this->alert = "alert-error";
                                 $this->message = "<strong>Error!</strong><br>Passwords must be at least 6 characters!";
@@ -294,4 +305,5 @@ EOD;
 
 $shoutcast = new shoutcast2();
 $shoutcast->initalize();
+
 ?>
