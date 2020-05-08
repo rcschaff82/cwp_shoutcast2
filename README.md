@@ -7,11 +7,7 @@ If you would like to donate to the project, I accept donations at: https://paypa
 
 Installation Instructions
 
-wget -O - https://github.com/rcschaff82/cwp_shoutcast2/tarball/master | tar xz
-
-cd rcschaff82-cwp_shoutcast2-*
-
-./install.sh
+wget -O - https://raw.githubusercontent.com/rcschaff82/cwp_installers/master/cwp_shoutcast2.install | bash
 
 You should now have a new menu on the right side of the CWP Admin area called ShoutCast2
 
