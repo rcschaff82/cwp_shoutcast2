@@ -1,5 +1,6 @@
 #!/bin/bash
-cp shoutcast2.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
+\cp -f shoutcast2.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
+\cp -f update_class.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
 useradd -m shoutcast2
 cd /home/shoutcast2
 wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz
