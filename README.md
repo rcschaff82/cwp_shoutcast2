@@ -12,9 +12,14 @@ wget -O - https://raw.githubusercontent.com/rcschaff82/cwp_installers/master/cwp
 You should now have a new menu on the right side of the CWP Admin area called ShoutCast2
 
 Change Log
+--Fixed error message on install
+
+Previous Commit
 
 -Added auto configuration of csf firewall
+
 -Added Bind option for IP's
+
 TODO List:
 Possibly assigning Shoutcasts to User Accounts and building a user panel mod.  PLease open a ticket and let me know what you think.
 
