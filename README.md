@@ -13,6 +13,9 @@ You should now have a new menu on the right side of the CWP Admin area called Sh
 
 Change Log
 --Fixed error message on install
+--Re-enabled update checks
+--Fixed install script to not download shoutcast when it's already installed
+--Fixed install script to not try to create user when it already exists
 
 Previous Commit
 
