@@ -1,10 +1,15 @@
 #!/bin/bash
 \cp -f shoutcast2.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
 \cp -f update_class.php /usr/local/cwpsrv/htdocs/resources/admin/modules/
-useradd -m shoutcast2
+if ! id "shoutcast2" &>/dev/null; then
+        useradd -m shoutcast2
+fi
 cd /home/shoutcast2
+if ! [ -f "/home/shoutcast2/sc_serv" ];
+then
 wget http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz
 tar -xzf sc_serv2_linux_x64-latest.tar.gz
+fi
 if ! grep -q "\-- cwp_shoutcast2 --" /usr/local/cwpsrv/htdocs/resources/admin/include/3rdparty.php
 then
 cat <<'EOF' >> /usr/local/cwpsrv/htdocs/resources/admin/include/3rdparty.php
