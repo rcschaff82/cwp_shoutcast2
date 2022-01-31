@@ -24,7 +24,7 @@ class shoutcast2 {
         {
                 ///  This is the main function
                 $this->check_is_s2_loaded();
-                $this->date_last_commit();
+                //$this->date_last_commit();
         }
         public function get_s2_version()
         {
