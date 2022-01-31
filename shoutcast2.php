@@ -304,7 +304,7 @@ EOD;
 }
 try {
         include_once('update_class.php');
-        $update = new gitupdate('rcschaff82','cwp_shoutcast2');
+        $update = new gitupdate('rcschaff82','cwp_shoutcast2','cwp_shoutcast2');
         $force = (isset($_GET['forceupdate']))?'Y':'N';
         $update->checkupdate($force);
 } catch (exception $e) {
